@@ -21,8 +21,8 @@ public class MecTestV3 extends LinearOpMode {
     private boolean changesMade = false;
     private double lErr = 0.;
     private int followPos = 0;
-    double defU = 0.1;
-    double kP = 0.0015;
+    double defU = 0.15;
+    double kP = 0.001;
     double kD = 0.0008;
 
     public void handToPos(int pos) {
