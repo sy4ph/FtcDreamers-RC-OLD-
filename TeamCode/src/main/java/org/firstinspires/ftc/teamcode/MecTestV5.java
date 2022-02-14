@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="MecTestV4", group="Linear Opmode")
-public class MecTestV3 extends LinearOpMode {
+@TeleOp(name="MecTestV5", group="Linear Opmode")
+public class MecTestV5 extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -18,25 +18,6 @@ public class MecTestV3 extends LinearOpMode {
     private DcMotor motorBackRight = null;
     private DcMotor motorHand = null;
     private CRServo servoVal = null;
-    private boolean changesMade = false;
-    private double lErr = 0.;
-    private int followPos = 0;
-    double defU = 0.15;
-    double kP = 0.001;
-    double kD = 0.0008;
-
-    public void handToPos(int pos) {
-
-        double err = pos - motorHand.getCurrentPosition();
-
-        double P = err * kP;
-        double D = (err - lErr) * kD;
-
-        double dU = P + D;
-        lErr = err;
-
-        motorHand.setPower(defU + dU);
-    }
 
     @Override
     public void runOpMode() {
@@ -57,16 +38,17 @@ public class MecTestV3 extends LinearOpMode {
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
         motorBackRight.setDirection(DcMotor.Direction.FORWARD);
-        motorHand.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorHand.setDirection(DcMotorSimple.Direction.REVERSE);
         servoVal.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        motorHand.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorHand.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        motorHand.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorHand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorHand.setPower(0.15);
 
         waitForStart();
         runtime.reset();
@@ -74,28 +56,31 @@ public class MecTestV3 extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            handToPos(followPos);
-            if (gamepad1.left_bumper)
+            if (gamepad1.left_bumper) {
                 servoVal.setPower(-1.);
-            if (gamepad1.right_bumper)
+            }
+            if (gamepad1.right_bumper) {
                 servoVal.setPower(1.);
-            if (gamepad1.a)
-                followPos = -100;
-            if (gamepad1.b)
-                followPos = 150;
-            if (gamepad1.y)
-                followPos = 250;
-            if ((gamepad1.dpad_down)&(changesMade)) {
-                followPos -= 50;
-                changesMade = false;
             }
-            if ((gamepad1.dpad_up)&(changesMade)) {
-                followPos += 50;
-                changesMade = false;
+            if ((gamepad1.a)&(motorHand.getCurrentPosition()>100)) {
+                motorHand.setTargetPosition(50);
+                motorHand.setPower(0.1);
             }
-            if ((!gamepad1.dpad_down)&(!gamepad1.dpad_up))
-                changesMade = true;
-
+            if ((gamepad1.a)&(motorHand.getCurrentPosition()<100)) {
+                motorHand.setTargetPosition(0);
+                motorHand.setPower(0.05);
+            }
+            if (gamepad1.b) {
+                motorHand.setTargetPosition(150);
+                motorHand.setPower(0.15);
+            }
+            if (gamepad1.y) {
+                motorHand.setTargetPosition(300);
+                motorHand.setPower(0.11);
+            }
+            if (gamepad1.right_trigger != 0.) {
+                servoVal.setPower(0.);
+            }
             double max;
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
@@ -123,15 +108,33 @@ public class MecTestV3 extends LinearOpMode {
                 rightBackPower  /= max;
             }
 
+            // This is test code:
+            //
+            // Uncomment the following code to test your motor directions.
+            // Each button should make the corresponding motor run FORWARD.
+            //   1) First get all the motors to take to correct positions on the robot
+            //      by adjusting your Robot Configuration if necessary.
+            //   2) Then make sure they run in the correct direction by modifying the
+            //      the setDirection() calls above.
+            // Once the correct motors move in the correct direction re-comment this code.
+
+            /*
+            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
+            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
+            */
+
             // Send calculated power to wheels
             motorFrontLeft.setPower(leftFrontPower);
             motorFrontRight.setPower(rightFrontPower);
             motorBackLeft.setPower(leftBackPower);
             motorBackRight.setPower(rightBackPower);
 
-            telemetry.addData("Hand Motor Power: ", motorHand.getPower());
-            telemetry.addData("Hand Motor Ticks: ", motorHand.getCurrentPosition());
-            telemetry.addData("Hand Motor Target Positions: ", followPos);
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("TargetPos",motorHand.getTargetPosition());
+            telemetry.addData("CurrentPos",motorHand.getCurrentPosition());
             telemetry.update();
         }
     }}
