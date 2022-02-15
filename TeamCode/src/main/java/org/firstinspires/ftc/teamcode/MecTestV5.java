@@ -52,8 +52,23 @@ public class MecTestV5 extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
-
-
+        // Autonomous part setup
+//        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//        motorBackRight.setTargetPosition(1400);
+//        motorBackLeft.setTargetPosition(1400);
+//        motorFrontRight.setTargetPosition(1400);
+//        motorFrontLeft.setTargetPosition(1400);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             if (gamepad1.left_bumper) {
