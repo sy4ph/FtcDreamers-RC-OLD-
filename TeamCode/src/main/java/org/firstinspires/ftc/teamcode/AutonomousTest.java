@@ -76,18 +76,23 @@ public class AutonomousTest extends LinearOpMode {
 
 //         Autonomous part setup
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontLeft.setTargetPosition(0);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setTargetPosition(0);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setTargetPosition(0);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setTargetPosition(0);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorHand.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorHand.setTargetPosition(0);
         motorHand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorBackRight.setPower(1.);
@@ -105,50 +110,26 @@ public class AutonomousTest extends LinearOpMode {
 
         motorsSet();
 
-
-
-        sleep(1000);
-
-        servoVal.setPower(1.);
-        sleep(2500);
-        servoVal.setPower(0.);
-
-        motorHand.setTargetPosition(200);
-        motorHand.setPower(0.15);
-        sleep(2000);
-
-        BRpos = BRpos - 3200;
-        FRpos = FRpos - 3200;
-        BLpos = BLpos + 3200;
-        FLpos = FLpos + 3200;
+        BLpos = BLpos + 900;
+        FLpos = FLpos + 900;
 
         motorsSet();
 
-        sleep(1500);
-
-
-        BRpos = BRpos + 2300;
-        FRpos = FRpos + 2300;
-        BLpos = BLpos + 2300;
-        FLpos = FLpos + 2300;
-
-        motorsSet();
-
-        sleep(1500);
-
+        motorHand.setPower(0.25);
+        motorHand.setTargetPosition(285);
         servoVal.setPower(-1.);
-        sleep(2000);
-        servoVal.setPower(0.);
 
-        motorHand.setPower(0.1);
-        motorHand.setTargetPosition(50);
+        BLpos = BLpos - 2800;
+        FLpos = FLpos - 2800;
+        BRpos = BRpos + 2800;
+        FRpos = FRpos + 2800;
 
-        sleep(900);
-        BRpos = BRpos + 3200;
-        FRpos = FRpos + 3200;
-        BLpos = BLpos - 3200;
-        FLpos = FLpos - 3200;
         motorsSet();
+
+        BRpos = BRpos + 4800;
+        FRpos = FRpos + 4800;
+        BLpos = BLpos + 4800;
+        FLpos = FLpos + 4800;
 
         while (opModeIsActive()) {
             telemetry.addData("runtime",runtime.toString());

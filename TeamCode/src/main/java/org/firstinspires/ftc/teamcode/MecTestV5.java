@@ -18,6 +18,7 @@ public class MecTestV5 extends LinearOpMode {
     private DcMotor motorBackRight = null;
     private DcMotor motorHand = null;
     private CRServo servoVal = null;
+    private boolean changesMade = false;
 
     @Override
     public void runOpMode() {
@@ -78,7 +79,7 @@ public class MecTestV5 extends LinearOpMode {
                 servoVal.setPower(1.);
             }
             if ((gamepad1.a)&(motorHand.getCurrentPosition()>100)) {
-                motorHand.setTargetPosition(50);
+                motorHand.setTargetPosition(75); //+25
                 motorHand.setPower(0.1);
             }
             if ((gamepad1.a)&(motorHand.getCurrentPosition()<100)) {
@@ -86,16 +87,36 @@ public class MecTestV5 extends LinearOpMode {
                 motorHand.setPower(0.05);
             }
             if (gamepad1.b) {
-                motorHand.setTargetPosition(150);
+                motorHand.setTargetPosition(155); //-20
                 motorHand.setPower(0.15);
             }
             if (gamepad1.y) {
-                motorHand.setTargetPosition(300);
+                motorHand.setTargetPosition(285); //-15
                 motorHand.setPower(0.11);
             }
             if (gamepad1.right_trigger != 0.) {
                 servoVal.setPower(0.);
             }
+            if ((gamepad1.dpad_up)&(changesMade)) {
+                motorHand.setTargetPosition(motorHand.getTargetPosition() + 25);
+                motorHand.setPower(0.2);
+                changesMade = false;
+            }
+            if ((gamepad1.dpad_down)&(changesMade)) {
+                motorHand.setTargetPosition(motorHand.getTargetPosition() - 25);
+                motorHand.setPower(0.2);
+                changesMade = false;
+            }
+            if ((!gamepad1.dpad_down)&(!gamepad1.dpad_up)) {
+                changesMade = true;
+            }
+            if ((gamepad1.left_stick_button)&(gamepad1.a)) {
+                motorHand.setPower(0.);
+                sleep(900);
+                motorHand.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                motorHand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
             double max;
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
