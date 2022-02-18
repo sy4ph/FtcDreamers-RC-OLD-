@@ -251,7 +251,7 @@ public class AutonomousTestR extends LinearOpMode {
         sleep(1500);
         servoVal.setPower(0.);
 
-        motorsSet(-2800,2800,-2800,2800);
+        motorsSet(2800,-2800,2800,-2800);
         sleep(1500);
         motorsSet(5800,5800,5800,5800);
 
