@@ -204,7 +204,7 @@ public class AutonomousParkingB extends LinearOpMode {
 
         //BL/BR/FL/FR
         motorsSet(-7200,7200,7200,-7200);
-        waitTillOver();
+        sleep(2000);
         motorsSet(1400,1400,1400,1400);
 
 //        if (duckPosition == 2) {
