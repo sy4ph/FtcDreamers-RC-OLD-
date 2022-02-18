@@ -98,10 +98,14 @@ public class AutonomousParkingB extends LinearOpMode {
     }
 
     public  void motorsSet(int BLplus, int BRplus, int FLplus,int FRplus) {
-        motorBackRight.setTargetPosition(BRpos + BRplus);
-        motorBackLeft.setTargetPosition(BLpos + BLplus);
-        motorFrontLeft.setTargetPosition(FLpos + FLplus);
-        motorFrontRight.setTargetPosition(FRpos + FRplus);
+        BRpos = BRpos + BRplus;
+        motorBackRight.setTargetPosition(BRpos);
+        BLpos = BLpos + BLplus;
+        motorBackLeft.setTargetPosition(BLpos);
+        FLpos = FLpos + FLplus;
+        motorFrontLeft.setTargetPosition(FLpos);
+        FRpos = FRpos + FRplus;
+        motorFrontRight.setTargetPosition(FRpos);
     }
     @Override
     public void runOpMode() {
