@@ -126,17 +126,17 @@ public class AutonomousTest extends LinearOpMode {
 
     private CRServo servoVal = null;
     public void waitTillOver() {
-        while ((motorFrontRight.getCurrentPosition() != motorFrontRight.getTargetPosition()) & (motorBackRight.getCurrentPosition() != motorBackRight.getTargetPosition()) & (motorFrontLeft.getCurrentPosition() != motorFrontLeft.getTargetPosition()) & (motorBackLeft.getCurrentPosition() != motorBackLeft.getTargetPosition())) {
+        while ((motorFrontRight.getCurrentPosition() > motorFrontRight.getTargetPosition()-10) & (motorFrontRight.getCurrentPosition() < motorFrontRight.getTargetPosition()+10) & (motorBackRight.getCurrentPosition() > motorBackRight.getTargetPosition()-10) & (motorBackRight.getCurrentPosition() < motorBackRight.getTargetPosition()+10) & (motorFrontLeft.getCurrentPosition() > motorFrontLeft.getTargetPosition()-10) & (motorFrontLeft.getCurrentPosition() < motorFrontLeft.getTargetPosition()+10) & (motorBackLeft.getCurrentPosition() > motorBackLeft.getTargetPosition()-10) & (motorBackLeft.getCurrentPosition() < motorBackLeft.getTargetPosition()+10)) {
             sleep(10);
         }
         sleep(100);
     }
 
-    public  void motorsSet() {
-        motorBackRight.setTargetPosition(BRpos);
-        motorBackLeft.setTargetPosition(BLpos);
-        motorFrontLeft.setTargetPosition(FLpos);
-        motorFrontRight.setTargetPosition(FRpos);
+    public  void motorsSet(int BLplus, int BRplus, int FLplus,int FRplus) {
+        motorBackRight.setTargetPosition(BRpos + BRplus);
+        motorBackLeft.setTargetPosition(BLpos + BLplus);
+        motorFrontLeft.setTargetPosition(FLpos + FLplus);
+        motorFrontRight.setTargetPosition(FRpos + FRplus);
     }
     @Override
     public void runOpMode() {
@@ -233,17 +233,12 @@ public class AutonomousTest extends LinearOpMode {
         }
 // movement starts here
         if (duckPosition == 1) {
-            BRpos = BRpos + 2800;
-            FRpos = FRpos + 2800;
-            BLpos = BLpos + 2800;
-            FLpos = FLpos + 2800;
-
-            motorsSet();
+            //BL/BR/FL/FR
+            motorsSet(2800,2800,2800,2800);
             sleep(1500);
-            BLpos = BLpos + 1300;
-            FLpos = FLpos + 1300;
 
-            motorsSet();
+
+            motorsSet(1300,0,1300,0);
             sleep(1500);
             motorHand.setPower(0.25);
             motorHand.setTargetPosition(285);
@@ -251,18 +246,28 @@ public class AutonomousTest extends LinearOpMode {
             servoVal.setPower(-1.);
             sleep(1500);
             servoVal.setPower(0.);
-            BLpos = BLpos - 2800;
-            FLpos = FLpos - 2800;
-            BRpos = BRpos + 2800;
-            FRpos = FRpos + 2800;
 
-            motorsSet();
+            motorsSet(-2800,2800,-2800,2800);
             sleep(1500);
-            BRpos = BRpos + 4800;
-            FRpos = FRpos + 4800;
-            BLpos = BLpos + 4800;
-            FLpos = FLpos + 4800;
-            motorsSet();
+            motorsSet(4800,4800,4800,4800);
+        }
+        if (duckPosition == 2) {
+            motorsSet(2800,2800,2800,2800);
+            sleep(1500);
+
+
+            motorsSet(1300,0,1300,0);
+            sleep(1500);
+            motorHand.setPower(0.25);
+            motorHand.setTargetPosition(155);
+            sleep(650);
+            servoVal.setPower(-1.);
+            sleep(1500);
+            servoVal.setPower(0.);
+
+            motorsSet(-2800,2800,-2800,2800);
+            sleep(1500);
+            motorsSet(4800,4800,4800,4800);
         }
         while (opModeIsActive()) {
             telemetry.addData("runtime",runtime.toString());
