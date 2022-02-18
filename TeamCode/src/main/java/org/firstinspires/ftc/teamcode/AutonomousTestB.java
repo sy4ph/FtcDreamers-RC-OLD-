@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "AutoTest1", group = "Autonomous")
-public class AutonomousTest extends LinearOpMode {
+public class AutonomousTestB extends LinearOpMode {
 
     private void initVuforia() {
         /*
@@ -236,43 +236,25 @@ public class AutonomousTest extends LinearOpMode {
             telemetry.addData("duckPosition", duckPosition);
         }
 // movement starts here
-        if (duckPosition == 1) {
-            //BL/BR/FL/FR
-            motorsSet(2800,2800,2800,2800);
-            sleep(1500);
+
+        //BL/BR/FL/FR
+        motorsSet(2800,2800,2800,2800);
+        sleep(1500);
 
 
-            motorsSet(1300,0,1300,0);
-            sleep(1500);
-            motorHand.setPower(0.25);
-            motorHand.setTargetPosition(285);
-            sleep(650);
-            servoVal.setPower(-1.);
-            sleep(1500);
-            servoVal.setPower(0.);
+        motorsSet(1300,0,1300,0);
+        sleep(1500);
+        motorHand.setPower(0.25);
+        motorHand.setTargetPosition(285);
+        sleep(650);
+        servoVal.setPower(-1.);
+        sleep(1500);
+        servoVal.setPower(0.);
 
-            motorsSet(-2800,2800,-2800,2800);
-            sleep(1500);
-            motorsSet(4800,4800,4800,4800);
-        }
-        if (duckPosition == 2) {
-            motorsSet(2800,2800,2800,2800);
-            sleep(1500);
+        motorsSet(-2800,2800,-2800,2800);
+        sleep(1500);
+        motorsSet(5800,5800,5800,5800);
 
-
-            motorsSet(1300,0,1300,0);
-            sleep(1500);
-            motorHand.setPower(0.25);
-            motorHand.setTargetPosition(155);
-            sleep(650);
-            servoVal.setPower(-1.);
-            sleep(1500);
-            servoVal.setPower(0.);
-
-            motorsSet(-2800,2800,-2800,2800);
-            sleep(1500);
-            motorsSet(4800,4800,4800,4800);
-        }
         while (opModeIsActive()) {
             telemetry.addData("runtime",runtime.toString());
         }
