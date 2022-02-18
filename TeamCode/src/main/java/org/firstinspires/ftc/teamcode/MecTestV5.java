@@ -79,12 +79,8 @@ public class MecTestV5 extends OpMode {
     }
 
     public void loop() {
-        if (gamepad1.left_bumper) {
-            servoVal.setPower(-1.);
-        }
-        if (gamepad1.right_bumper) {
-            servoVal.setPower(1.);
-        }
+        servoVal.setPower(-gamepad1.left_trigger);
+        servoVal.setPower(gamepad1.right_trigger);
         if ((gamepad1.a) & (motorHand.getCurrentPosition() > 100)) {
             motorHand.setTargetPosition(75); //+25
             motorHand.setPower(0.1);
@@ -101,7 +97,7 @@ public class MecTestV5 extends OpMode {
             motorHand.setTargetPosition(285); //-15
             motorHand.setPower(0.11);
         }
-        if (gamepad1.right_trigger != 0.) {
+        if (gamepad1.right_bumper) {
             servoVal.setPower(0.);
         }
         if ((gamepad1.dpad_up) & (changesMade)) {
@@ -117,9 +113,13 @@ public class MecTestV5 extends OpMode {
         if ((!gamepad1.dpad_down) & (!gamepad1.dpad_up)) {
             changesMade = true;
         }
-        if ((gamepad1.left_stick_button) & (gamepad1.a)) {
+        if ((gamepad1.left_bumper) & (gamepad1.a)) {
             motorHand.setPower(0.);
-            sleep(2);
+            try {
+                sleep(900);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             motorHand.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motorHand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
