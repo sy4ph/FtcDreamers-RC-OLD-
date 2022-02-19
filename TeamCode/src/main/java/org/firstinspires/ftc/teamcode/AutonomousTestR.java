@@ -242,18 +242,19 @@ public class AutonomousTestR extends LinearOpMode {
         sleep(1500);
 
 
-        motorsSet(0,1300,0,1300);
+        motorsSet(-800,800,-800,800);
         sleep(1500);
         motorHand.setPower(0.25);
         motorHand.setTargetPosition(285);
         sleep(650);
-        servoVal.setPower(-1.);
+        servoVal.setPower(-0.6);
         sleep(1500);
         servoVal.setPower(0.);
 
         motorsSet(2800,-2800,2800,-2800);
+        motorHand.setTargetPosition(100);
         sleep(1500);
-        motorsSet(5800,5800,5800,5800);
+        motorsSet(6800,6800,6800,6800);
 
         while (opModeIsActive()) {
             telemetry.addData("runtime",runtime.toString());

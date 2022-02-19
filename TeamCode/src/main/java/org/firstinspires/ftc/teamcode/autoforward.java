@@ -72,5 +72,7 @@ public class autoforward extends LinearOpMode {
         motorFrontRight.setPower(1.);
 
         motorsSet(5600,5600,5600,5600);
+        while (opModeIsActive()) {
+        }
     }
 }

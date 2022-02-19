@@ -79,8 +79,21 @@ public class MecTestV5 extends OpMode {
     }
 
     public void loop() {
-        servoVal.setPower(-gamepad1.left_trigger);
-        servoVal.setPower(gamepad1.right_trigger);
+        if (gamepad1.right_trigger != 0) {
+            servoVal.setPower(gamepad1.right_trigger);
+        }
+        if (gamepad1.left_trigger != 0) {
+            servoVal.setPower(-gamepad1.left_trigger);
+        }
+        if ((gamepad1.right_trigger == 0)&(gamepad1.left_trigger == 0)) {
+            servoVal.setPower(0.);
+        }
+//        if (gamepad1.left_trigger != 0.) {
+//            servoVal.setPower(1.);
+//        }
+//        else if (gamepad1.right_trigger == 0) {
+//            servoVal.setPower(0.);
+//        }
         if ((gamepad1.a) & (motorHand.getCurrentPosition() > 100)) {
             motorHand.setTargetPosition(75); //+25
             motorHand.setPower(0.1);
