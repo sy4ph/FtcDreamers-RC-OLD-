@@ -215,16 +215,16 @@ public class AutonomousTestB extends LinearOpMode {
         sleep(1500);
 
 
-        motorsSet(1300,-1300,1300,-1300);
+        motorsSet(800,-800,800,-800);
         sleep(1500);
         motorHand.setPower(0.25);
         motorHand.setTargetPosition(285);
         sleep(650);
-        servoVal.setPower(-0.6);
+        servoVal.setPower(-0.3);
         sleep(1500);
         servoVal.setPower(0.);
 
-        motorsSet(-2800,2800,-2800,2800);
+        motorsSet(-2400,2400,-2400,2400);
         motorHand.setTargetPosition(100);
         sleep(1500);
         motorsSet(6800,6800,6800,6800);
