@@ -43,7 +43,7 @@ public class MecTestV5 extends OpMode {
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
         motorBackRight.setDirection(DcMotor.Direction.FORWARD);
-        motorHand.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorHand.setDirection(DcMotorSimple.Direction.FORWARD);
         servoVal.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
