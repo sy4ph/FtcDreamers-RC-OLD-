@@ -144,20 +144,20 @@ public class AutonomousTestR extends LinearOpMode {
     }
     @Override
     public void runOpMode() {
-        initVuforia();
-        initTfod();
-
-        if (tfod != null) {
-            tfod.activate();
-
-            // The TensorFlow software will scale the input images from the camera to a lower resolution.
-            // This can result in lower detection accuracy at longer distances (> 55cm or 22").
-            // If your target is at distance greater than 50 cm (20") you can adjust the magnification value
-            // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
-            // should be set to the value of the images used to create the TensorFlow Object Detection model
-            // (typically 16/9).
-            tfod.setZoom(2.5, 16.0/9.0);
-        }
+//        initVuforia();
+//        initTfod();
+//
+//        if (tfod != null) {
+//            tfod.activate();
+//
+//            // The TensorFlow software will scale the input images from the camera to a lower resolution.
+//            // This can result in lower detection accuracy at longer distances (> 55cm or 22").
+//            // If your target is at distance greater than 50 cm (20") you can adjust the magnification value
+//            // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
+//            // should be set to the value of the images used to create the TensorFlow Object Detection model
+//            // (typically 16/9).
+//            tfod.setZoom(2.5, 16.0/9.0);
+//        }
 
         motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
         motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
@@ -170,7 +170,7 @@ public class AutonomousTestR extends LinearOpMode {
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
         motorBackRight.setDirection(DcMotor.Direction.FORWARD);
-        motorHand.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorHand.setDirection(DcMotorSimple.Direction.FORWARD);
         servoVal.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
@@ -204,37 +204,37 @@ public class AutonomousTestR extends LinearOpMode {
 
 
 
-        if (tfod != null) {
-            List<Recognition> recognitions = tfod.getUpdatedRecognitions();
-            if (recognitions == null) {
-                double timeStamp = runtime.seconds();
-                // if recognitions are empty try to getUpdatedRecognitions for 5 seconds
-                while (((runtime.seconds() - timeStamp) < 5.) & (recognitions == null)) {
-                    recognitions = tfod.getUpdatedRecognitions();
-                }
-            }
-
-            for (Recognition recognition : recognitions) {
-                if (recognition.getLabel() == "Duck") {
-                    duckRight = recognition.getBottom();
-                    duckLeft = recognition.getLeft();
-                }
-            }
-
-            if (recognitions != null) {
-                if (recognitions.size() == 3) {
-                    for (Recognition recognition : recognitions) {
-                        if ((recognition.getLabel() != "Duck")&(recognition.getBottom() < duckLeft)) {
-                            duckPosition++;
-                        }
-                    }
-                }
-            }
-            else {
-                duckPosition = 3;
-            }
-            telemetry.addData("duckPosition", duckPosition);
-        }
+//        if (tfod != null) {
+//            List<Recognition> recognitions = tfod.getUpdatedRecognitions();
+//            if (recognitions == null) {
+//                double timeStamp = runtime.seconds();
+//                // if recognitions are empty try to getUpdatedRecognitions for 5 seconds
+//                while (((runtime.seconds() - timeStamp) < 5.) & (recognitions == null)) {
+//                    recognitions = tfod.getUpdatedRecognitions();
+//                }
+//            }
+//
+//            for (Recognition recognition : recognitions) {
+//                if (recognition.getLabel() == "Duck") {
+//                    duckRight = recognition.getBottom();
+//                    duckLeft = recognition.getLeft();
+//                }
+//            }
+//
+//            if (recognitions != null) {
+//                if (recognitions.size() == 3) {
+//                    for (Recognition recognition : recognitions) {
+//                        if ((recognition.getLabel() != "Duck")&(recognition.getBottom() < duckLeft)) {
+//                            duckPosition++;
+//                        }
+//                    }
+//                }
+//            }
+//            else {
+//                duckPosition = 3;
+//            }
+//            telemetry.addData("duckPosition", duckPosition);
+//        }
 // movement starts here
 
         //BL/BR/FL/FR

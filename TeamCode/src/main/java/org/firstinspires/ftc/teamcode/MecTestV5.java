@@ -24,6 +24,7 @@ public class MecTestV5 extends OpMode {
     private DcMotor motorHand = null;
     private CRServo servoVal = null;
     private boolean changesMade = false;
+    private boolean totop = false;
 
     public void init() {
 
@@ -43,7 +44,7 @@ public class MecTestV5 extends OpMode {
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
         motorBackRight.setDirection(DcMotor.Direction.FORWARD);
-        motorHand.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorHand.setDirection(DcMotorSimple.Direction.FORWARD);
         servoVal.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
@@ -114,17 +115,27 @@ public class MecTestV5 extends OpMode {
             motorHand.setTargetPosition(285); //-15
             motorHand.setPower(0.11);
         }
+        if (gamepad1.x) {
+            motorHand.setTargetPosition(450);
+            motorHand.setPower(0.1);
+            totop = true;
+        }
+        if ((totop = true) & motorHand.getCurrentPosition() > 440) {
+            motorHand.setTargetPosition(600);
+            motorHand.setPower(0.06);
+        }
+
         if (gamepad1.right_bumper) {
             servoVal.setPower(0.);
         }
         if ((gamepad1.dpad_up) & (changesMade)) {
             motorHand.setTargetPosition(motorHand.getTargetPosition() + 25);
-            motorHand.setPower(0.2);
+            motorHand.setPower(0.5);
             changesMade = false;
         }
         if ((gamepad1.dpad_down) & (changesMade)) {
             motorHand.setTargetPosition(motorHand.getTargetPosition() - 25);
-            motorHand.setPower(0.2);
+            motorHand.setPower(0.5);
             changesMade = false;
         }
         if ((!gamepad1.dpad_down) & (!gamepad1.dpad_up)) {
