@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -12,23 +10,20 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This class defines and inits standart 5-motor 1-CRServo configuration.
  * Use object of this class to stop wasting time on writing stupid stuff another ten thousand times.
  */
-public class StandartConfig
-{
+public class StandartConfig {
+    private final ElapsedTime period = new ElapsedTime();
     /* Public OpMode members. */
-    public DcMotor  motorFrontRight = null;
-    public DcMotor  motorFrontLeft  = null;
-    public DcMotor  motorBackLeft   = null;
+    public DcMotor motorFrontRight = null;
+    public DcMotor motorFrontLeft = null;
+    public DcMotor motorBackLeft = null;
     public DcMotor motorBackRight = null;
     public DcMotor motorHand = null;
     public CRServo servoVal = null;
-
-
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
+    HardwareMap hwMap = null;
 
     /* Constructor */
-    public StandartConfig(){
+    public StandartConfig() {
 
     }
 
@@ -42,7 +37,7 @@ public class StandartConfig
         motorFrontLeft = hwMap.get(DcMotor.class, "motorFrontLeft");
         motorBackLeft = hwMap.get(DcMotor.class, "motorBackLeft");
         motorBackRight = hwMap.get(DcMotor.class, "motorBackRight");
-        motorHand = hwMap.get(DcMotor.class,"motorHand");
+        motorHand = hwMap.get(DcMotor.class, "motorHand");
 
         motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -70,7 +65,7 @@ public class StandartConfig
 
 
         // Define and initialize ALL installed servos.
-        servoVal = hwMap.get(CRServo.class,"servoVal");
+        servoVal = hwMap.get(CRServo.class, "servoVal");
 
     }
 }

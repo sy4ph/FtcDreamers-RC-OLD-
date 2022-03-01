@@ -7,12 +7,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="MecTestV5", group="Linear Opmode")
+@TeleOp(name = "MecTestV5", group = "Linear Opmode")
 public class TeleOpTC extends OpMode {
 
+    private final ElapsedTime runtime = new ElapsedTime();
     // Init standart configuration from StandartConfig class
     StandartConfig robot = new StandartConfig();
-    private ElapsedTime runtime = new ElapsedTime();
     private boolean changesMade = false;
 
     public void init() {
@@ -30,7 +30,7 @@ public class TeleOpTC extends OpMode {
         if (gamepad1.left_trigger != 0) {
             robot.servoVal.setPower(-gamepad1.left_trigger);
         }
-        if ((gamepad1.right_trigger == 0)&(gamepad1.left_trigger == 0)) {
+        if ((gamepad1.right_trigger == 0) & (gamepad1.left_trigger == 0)) {
             robot.servoVal.setPower(0.);
         }
         if (gamepad1.a) {
@@ -109,11 +109,12 @@ public class TeleOpTC extends OpMode {
         robot.motorBackRight.setPower(rightBackPower);
 
         // Telemetry of hand DCMotor and runtime.
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Status", "Run Time: " + runtime);
         telemetry.addData("TargetPos", robot.motorHand.getTargetPosition());
         telemetry.addData("CurrentPos", robot.motorHand.getCurrentPosition());
         telemetry.update();
     }
+
     public void stop() {
         // Move hand to 0 position
         robot.motorHand.setPower(0.1);
