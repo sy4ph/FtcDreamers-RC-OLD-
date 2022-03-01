@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-// TODO: 01.03.2022 change values, they are not final;
 // TODO: 01.03.2022 rewrite opmode to be iterative
 // TODO: 01.03.2022 Logs implementation? That could turn out to be pretty useful
 
