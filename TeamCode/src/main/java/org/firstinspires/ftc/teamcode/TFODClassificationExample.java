@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * autonomous mode modified for our team's use. It will be used later on
  * upon installing camera to the robot.
  *
- * This class has an algorithm of automatical recognition of a target
+ * This class has an algorithm of automatic recognition of a target
  * position for pre-load element installment.
  */
 
@@ -43,11 +43,6 @@ public class TFODClassificationExample extends LinearOpMode {
     private double duckLeft = 0;
 
     private ElapsedTime runtime = new ElapsedTime();
-
-    public double FLpos = 0;
-    public double FRpos = 0;
-    public double BLpos = 0;
-    public double BRpos = 0;
 
     StandartConfig robot = new StandartConfig();
 
@@ -81,25 +76,6 @@ public class TFODClassificationExample extends LinearOpMode {
         tfodParameters.inputSize = 320;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-    }
-
-    /**
-     * Function that sets target position for motors
-     *
-     * @param BLplus Value for rear left motor; 1 full round = 1440 ticks
-     * @param BRplus Value for rear right motor;
-     * @param FLplus Value for front left motor;
-     * @param FRplus Value for front right motor;
-     */
-    public void motorsSet(double BLplus, double BRplus, double FLplus, double FRplus) {
-        BRpos = BRpos + BRplus;
-        robot.motorBackRight.setTargetPosition((int) (BRpos / 2.678));
-        BLpos = BLpos + BLplus;
-        robot.motorBackLeft.setTargetPosition((int) (BLpos / 2.678));
-        FLpos = FLpos + FLplus;
-        robot.motorFrontLeft.setTargetPosition((int) (FLpos / 2.678));
-        FRpos = FRpos + FRplus;
-        robot.motorFrontRight.setTargetPosition((int) (FRpos / 2.678));
     }
 
     @Override
@@ -188,13 +164,13 @@ public class TFODClassificationExample extends LinearOpMode {
         }
 
         // Movement starts here
-        // All the values are low-key totally random nad probably won't work at all
+        // All the values are low-key totally random and probably won't work at all
         //BL/BR/FL/FR
-        motorsSet(2500,-2500,-2500,2500);
+        robot.motorsSet(2500,-2500,-2500,2500);
         sleep(1500);
 
 
-        motorsSet(2800,2800,2800,2800);
+        robot.motorsSet(2800,2800,2800,2800);
         sleep(1500);
 
         robot.motorHand.setPower(0.25);
@@ -204,9 +180,9 @@ public class TFODClassificationExample extends LinearOpMode {
         sleep(2500);
         robot.servoVal.setPower(0.);
 
-        motorsSet(2200,-2200,2200,-2200);
+        robot.motorsSet(2200,-2200,2200,-2200);
         sleep(1500);
-        motorsSet(5800,5800,5800,5800);
+        robot.motorsSet(5800,5800,5800,5800);
 
 
         while (opModeIsActive()) {

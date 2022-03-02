@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "MecTestV5", group = "Linear Opmode")
+@TeleOp(name = "Standard Configuration OpMode", group = "Linear Opmode")
 public class TeleOpTC extends OpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
-    // Init standart configuration from StandartConfig class
+    // Init standard configuration from StandardConfig class
     StandartConfig robot = new StandartConfig();
     private boolean changesMade = false;
 

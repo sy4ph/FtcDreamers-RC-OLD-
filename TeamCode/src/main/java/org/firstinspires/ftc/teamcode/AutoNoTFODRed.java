@@ -10,22 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class AutoNoTFODRed extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
-    public double FLpos = 0;
-    public double FRpos = 0;
-    public double BLpos = 0;
-    public double BRpos = 0;
-    StandartConfig robot = new StandartConfig();
 
-    public void motorsSet(double BLplus, double BRplus, double FLplus, double FRplus) {
-        BRpos = BRpos + BRplus;
-        robot.motorBackRight.setTargetPosition((int) (BRpos / 2.678));
-        BLpos = BLpos + BLplus;
-        robot.motorBackLeft.setTargetPosition((int) (BLpos / 2.678));
-        FLpos = FLpos + FLplus;
-        robot.motorFrontLeft.setTargetPosition((int) (FLpos / 2.678));
-        FRpos = FRpos + FRplus;
-        robot.motorFrontRight.setTargetPosition((int) (FRpos / 2.678));
-    }
+    StandartConfig robot = new StandartConfig();
 
     @Override
     public void runOpMode() {
@@ -40,10 +26,10 @@ public class AutoNoTFODRed extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        motorsSet(2800, 2800, 2800, 2800);
+        robot.motorsSet(2800, 2800, 2800, 2800);
         sleep(1500);
 
-        motorsSet(-800, 800, -800, 800);
+        robot.motorsSet(-800, 800, -800, 800);
         sleep(1500);
 
         robot.motorHand.setPower(0.25);
@@ -55,11 +41,11 @@ public class AutoNoTFODRed extends LinearOpMode {
 
         robot.servoVal.setPower(0.);
 
-        motorsSet(2400, -2400, 2400, -2400);
+        robot.motorsSet(2400, -2400, 2400, -2400);
         robot.motorHand.setTargetPosition(100);
         sleep(1500);
 
-        motorsSet(7800, 7800, 7800, 7800);
+        robot.motorsSet(7800, 7800, 7800, 7800);
 
         while (opModeIsActive()) {
             telemetry.addData("runtime", runtime.toString());

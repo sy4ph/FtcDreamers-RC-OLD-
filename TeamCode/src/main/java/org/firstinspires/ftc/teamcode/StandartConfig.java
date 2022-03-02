@@ -14,10 +14,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class StandartConfig {
     private final ElapsedTime period = new ElapsedTime();
     /* Public OpMode members. */
-    public DcMotor motorFrontRight = null;
-    public DcMotor motorFrontLeft = null;
-    public DcMotor motorBackLeft = null;
-    public DcMotor motorBackRight = null;
+    public DcMotorEx motorFrontRight = null;
+    public DcMotorEx motorFrontLeft = null;
+    public DcMotorEx motorBackLeft = null;
+    public DcMotorEx motorBackRight = null;
     public DcMotorEx motorHand = null;
     public CRServo servoVal = null;
     /* local OpMode members. */
@@ -34,16 +34,16 @@ public class StandartConfig {
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        motorFrontRight = hwMap.get(DcMotor.class, "motorFrontRight");
-        motorFrontLeft = hwMap.get(DcMotor.class, "motorFrontLeft");
-        motorBackLeft = hwMap.get(DcMotor.class, "motorBackLeft");
-        motorBackRight = hwMap.get(DcMotor.class, "motorBackRight");
+        motorFrontRight = hwMap.get(DcMotorEx.class, "motorFrontRight");
+        motorFrontLeft = hwMap.get(DcMotorEx.class, "motorFrontLeft");
+        motorBackLeft = hwMap.get(DcMotorEx.class, "motorBackLeft");
+        motorBackRight = hwMap.get(DcMotorEx.class, "motorBackRight");
         motorHand = hwMap.get(DcMotorEx.class, "motorHand");
 
-        motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
-        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotor.Direction.FORWARD);
-        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontRight.setDirection(DcMotorEx.Direction.FORWARD);
+        motorFrontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotorEx.Direction.FORWARD);
+        motorBackLeft.setDirection(DcMotorEx.Direction.REVERSE);
         motorHand.setDirection(DcMotorEx.Direction.FORWARD);
 
         // Set all motors to zero power
@@ -67,5 +67,41 @@ public class StandartConfig {
         // Define and initialize ALL installed servos.
         servoVal = hwMap.get(CRServo.class, "servoVal");
 
+    }
+
+    private double FLpos = 0;
+    private double FRpos = 0;
+    private double BLpos = 0;
+    private double BRpos = 0;
+
+    /**
+     * This method is used in autonomous movement and works solely with GoBilda motors.
+     * TODO 02.03.22 change this method to work using centimeters, not ticks.
+     * @param BLplus Value for rear left motor; 1 full round = 1440 ticks
+     * @param BRplus Value for rear right motor;
+     * @param FLplus Value for front left motor;
+     * @param FRplus Value for front right motor;
+     */
+    public void motorsSet(double BLplus, double BRplus, double FLplus, double FRplus) {
+        BRpos = BRpos + BRplus;
+        motorBackRight.setTargetPosition((int) (BRpos / 2.678));
+        BLpos = BLpos + BLplus;
+        motorBackLeft.setTargetPosition((int) (BLpos / 2.678));
+        FLpos = FLpos + FLplus;
+        motorFrontLeft.setTargetPosition((int) (FLpos / 2.678));
+        FRpos = FRpos + FRplus;
+        motorFrontRight.setTargetPosition((int) (FRpos / 2.678));
+    }
+
+    /**
+     * This is strange method, I don't yet know ho to implement and use it properly,
+     * but that is better than nothing, honestly.
+     */
+    private boolean finished = true;
+    public void waitTillOver() {
+        while ((motorFrontLeft.getVelocity() > 15) & (motorFrontRight.getVelocity() > 15) & (motorBackLeft.getVelocity() > 15) & (motorBackRight.getVelocity() > 15)) {
+            finished = false;
+        }
+        finished = true;
     }
 }
