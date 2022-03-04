@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -8,7 +9,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * this opmode is an extension to the standart basic no TFOD opmode.
  * It will try to get at least a couple of cubes besides a pre-loaded cube.
  */
+
+
 @Autonomous(name = "Autonomous Parking + LVL3 / Blue Extended", group = "Autonomous w/out TFOD")
+@Disabled
 public class AutoNoTFODBlueEX extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
     // changing to iterative raises strange exceptions

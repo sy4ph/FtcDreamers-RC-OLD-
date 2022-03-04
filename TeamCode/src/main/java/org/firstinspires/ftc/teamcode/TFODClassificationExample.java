@@ -22,6 +22,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * This class has an algorithm of automatic recognition of a target
  * position for pre-load element installment.
  */
+/*
+todo So i have an idea for rewriting autonomous. I think we should change it to operating in cycle, not in the linear algorithm. We have seen that with AutoVortex - their autonomous is just a cycle, it stops whenever timer runs out.
+
+Some other stuff:
+    using Thread.sleep with an iterative opmode sucks. I think finding a good wait till over method would be amazing.
+    velocity meter gives us much more interesting opportunities.
+    Also PIDF-coefficients are changable. We could find the ones that are the best fit.
+    Also they can be changed mid-opmode. Maybe we'll find some use in that.
+
+ */
 
 @Autonomous(name = "TFODExample", group = "Autonomous")
 @Disabled
