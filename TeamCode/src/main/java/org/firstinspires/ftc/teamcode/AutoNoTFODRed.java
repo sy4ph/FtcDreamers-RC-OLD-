@@ -16,7 +16,7 @@ public class AutoNoTFODRed extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        robot.init(hardwareMap);
+        robot.initAuto(hardwareMap);
 
         robot.motorBackLeft.setPower(1.);
         robot.motorBackRight.setPower(1.);

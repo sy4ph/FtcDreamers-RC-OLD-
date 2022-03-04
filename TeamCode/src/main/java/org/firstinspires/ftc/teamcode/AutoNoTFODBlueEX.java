@@ -28,7 +28,7 @@ public class AutoNoTFODBlueEX extends LinearOpMode {
         /**
          * Initialise standart config
          */
-        robot.init(hardwareMap);
+        robot.initAuto(hardwareMap);
 
         robot.motorBackLeft.setPower(1.);
         robot.motorBackRight.setPower(1.);

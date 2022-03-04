@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 // TODO: 01.03.2022 Change PIDF coefficients; no idea which to use; also there is velocity regulators, not sure what to do with them
@@ -29,7 +30,7 @@ public class StandartConfig {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
+    public void initTele(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
 
@@ -66,7 +67,57 @@ public class StandartConfig {
 
         // Define and initialize ALL installed servos.
         servoVal = hwMap.get(CRServo.class, "servoVal");
+        servoVal.setDirection(CRServo.Direction.REVERSE);
+    }
 
+    public void initAuto(HardwareMap ahwMap) {
+        // Save reference to Hardware map
+        hwMap = ahwMap;
+
+        // Define and Initialize Motors
+        motorFrontRight = hwMap.get(DcMotorEx.class, "motorFrontRight");
+        motorFrontLeft = hwMap.get(DcMotorEx.class, "motorFrontLeft");
+        motorBackLeft = hwMap.get(DcMotorEx.class, "motorBackLeft");
+        motorBackRight = hwMap.get(DcMotorEx.class, "motorBackRight");
+        motorHand = hwMap.get(DcMotorEx.class, "motorHand");
+
+        motorFrontRight.setDirection(DcMotorEx.Direction.FORWARD);
+        motorFrontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotorEx.Direction.FORWARD);
+        motorBackLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        motorHand.setDirection(DcMotorEx.Direction.FORWARD);
+
+        // Set all motors to zero power
+        motorFrontRight.setPower(0.);
+        motorFrontLeft.setPower(0.);
+        motorBackLeft.setPower(0.);
+        motorBackRight.setPower(0.);
+        motorHand.setPower(0.);
+
+        // Set all motors to run without encoders.
+        // May want to use RUN_USING_ENCODERS if encoders are installed.
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorBackRight.setTargetPosition(0);
+        motorBackLeft.setTargetPosition(0);
+        motorFrontRight.setTargetPosition(0);
+        motorFrontLeft.setTargetPosition(0);
+
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorHand.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motorHand.setTargetPosition(0);
+        motorHand.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
+        // Define and initialize ALL installed servos.
+        servoVal = hwMap.get(CRServo.class, "servoVal");
+        servoVal.setDirection(CRServo.Direction.REVERSE);
     }
 
     private double FLpos = 0;

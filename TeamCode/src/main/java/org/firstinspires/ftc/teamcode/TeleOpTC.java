@@ -16,7 +16,7 @@ public class TeleOpTC extends OpMode {
     private boolean changesMade = false;
 
     public void init() {
-        robot.init(hardwareMap);
+        robot.initTele(hardwareMap);
     }
 
     public void start() {
