@@ -33,6 +33,8 @@ public class AutoNoTFODBlue extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        robot.start_reset();
+
         robot.motorsSet(2800, 2800, 2800, 2800);
         sleep(1500);
 
@@ -40,7 +42,7 @@ public class AutoNoTFODBlue extends LinearOpMode {
         sleep(1500);
 
         robot.motorHand.setPower(0.25);
-        robot.motorHand.setTargetPosition(285);
+        robot.motorHand.setTargetPosition(285*2);
         sleep(650);
 
         robot.servoVal.setPower(-0.3);
@@ -49,7 +51,7 @@ public class AutoNoTFODBlue extends LinearOpMode {
         robot.servoVal.setPower(0.);
 
         robot.motorsSet(-2400, 2400, -2400, 2400);
-        robot.motorHand.setTargetPosition(100);
+        robot.motorHand.setTargetPosition(100*2);
         sleep(1500);
 
         robot.motorsSet(7800, 7800, 7800, 7800);

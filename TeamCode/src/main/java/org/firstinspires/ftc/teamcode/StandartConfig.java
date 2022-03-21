@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -21,6 +23,7 @@ public class StandartConfig {
     public DcMotorEx motorBackRight = null;
     public DcMotorEx motorHand = null;
     public CRServo servoVal = null;
+    public CRServo servoUtki = null;
     /* local OpMode members. */
     HardwareMap hwMap = null;
 
@@ -68,8 +71,21 @@ public class StandartConfig {
         // Define and initialize ALL installed servos.
         servoVal = hwMap.get(CRServo.class, "servoVal");
         servoVal.setDirection(CRServo.Direction.REVERSE);
+        servoUtki = hwMap.get(CRServo.class, "servoUtki");
+        servoUtki.setDirection(CRServo.Direction.REVERSE);
     }
 
+    public void start_reset() {
+        motorHand.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorHand.setPower(-0.3);
+        try {
+            sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        motorHand.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorHand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
     public void initAuto(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
@@ -118,6 +134,8 @@ public class StandartConfig {
         // Define and initialize ALL installed servos.
         servoVal = hwMap.get(CRServo.class, "servoVal");
         servoVal.setDirection(CRServo.Direction.REVERSE);
+        servoUtki = hwMap.get(CRServo.class, "servoUtki");
+        servoUtki.setDirection(CRServo.Direction.REVERSE);
     }
 
     private double FLpos = 0;

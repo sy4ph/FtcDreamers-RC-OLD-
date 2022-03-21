@@ -9,8 +9,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+
 @TeleOp(name = "Standard Configuration OpMode", group = "Linear Opmode")
 public class TeleOpTC extends OpMode {
+
+    BNO055IMU imu;
+    Orientation Angles = new Orientation();
 
     private final ElapsedTime runtime = new ElapsedTime();
     // Init standard configuration from StandardConfig class
@@ -21,44 +32,78 @@ public class TeleOpTC extends OpMode {
         robot.initTele(hardwareMap);
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled = false;
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
     }
 
     public void start() {
         runtime.reset();
+//        robot.motorHand.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        robot.motorHand.setPower(-0.3);
+//        try {
+//            sleep(1500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        robot.motorHand.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.motorHand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void loop() {
-        if (gamepad1.right_trigger != 0) {
-            robot.servoVal.setPower(gamepad1.right_trigger);
+        if (!gamepad1.left_bumper) {
+            if (gamepad1.right_trigger != 0) {
+                robot.servoVal.setPower(gamepad1.right_trigger);
+            }
+            if (gamepad1.left_trigger != 0) {
+                robot.servoVal.setPower(-gamepad1.left_trigger);
+            }
+            if ((gamepad1.right_trigger == 0) & (gamepad1.left_trigger == 0)) {
+                robot.servoVal.setPower(0.);
+            }
         }
-        if (gamepad1.left_trigger != 0) {
-            robot.servoVal.setPower(-gamepad1.left_trigger);
-        }
-        if ((gamepad1.right_trigger == 0) & (gamepad1.left_trigger == 0)) {
+        if (gamepad1.left_bumper) {
             robot.servoVal.setPower(0.);
+            if (gamepad1.right_trigger != 0) {
+                robot.servoUtki.setPower(gamepad1.right_trigger);
+            }
+            if (gamepad1.left_trigger != 0) {
+                robot.servoUtki.setPower(-gamepad1.left_trigger);
+            }
+            if ((gamepad1.right_trigger == 0) & (gamepad1.left_trigger == 0)) {
+                robot.servoUtki.setPower(0.);
+            }
         }
         if (gamepad1.a) {
-            robot.motorHand.setTargetPosition(0);
+            robot.motorHand.setTargetPosition(80);
             robot.motorHand.setPower(0.1);
         }
         if (gamepad1.b) {
-            robot.motorHand.setTargetPosition(155); //-20
+            robot.motorHand.setTargetPosition(85*4); //-20
             robot.motorHand.setPower(0.15);
         }
         if (gamepad1.y) {
-            robot.motorHand.setTargetPosition(300); //-15
+            robot.motorHand.setTargetPosition(158*4); //-15
             robot.motorHand.setPower(0.11);
         }
         if (gamepad1.right_bumper) {
             robot.servoVal.setPower(0.);
         }
         if ((gamepad1.dpad_up) & (changesMade)) {
-            robot.motorHand.setTargetPosition(robot.motorHand.getTargetPosition() + 25);
+            robot.motorHand.setTargetPosition(robot.motorHand.getTargetPosition() + 12);
             robot.motorHand.setPower(0.5);
             changesMade = false;
         }
         if ((gamepad1.dpad_down) & (changesMade)) {
-            robot.motorHand.setTargetPosition(robot.motorHand.getTargetPosition() - 25);
+            robot.motorHand.setTargetPosition(robot.motorHand.getTargetPosition() - 12);
             robot.motorHand.setPower(0.5);
             changesMade = false;
         }
@@ -107,16 +152,18 @@ public class TeleOpTC extends OpMode {
         }
 
 
-        robot.motorFrontLeft.setPower(leftFrontPower);
-        robot.motorFrontRight.setPower(rightFrontPower);
-        robot.motorBackLeft.setPower(leftBackPower);
-        robot.motorBackRight.setPower(rightBackPower);
+        robot.motorFrontLeft.setPower(leftFrontPower*0.5);
+        robot.motorFrontRight.setPower(rightFrontPower*0.5);
+        robot.motorBackLeft.setPower(leftBackPower*0.5);
+        robot.motorBackRight.setPower(rightBackPower*0.5);
 
         // Telemetry of hand DCMotor and runtime.
         telemetry.addData("Status", "Run Time: " + runtime);
         telemetry.addData("TargetPos", robot.motorHand.getTargetPosition());
         telemetry.addData("CurrentPos", robot.motorHand.getCurrentPosition());
         telemetry.update();
+
+        telemetry.addData("Heading: ", imu.get)
     }
 
     public void stop() {

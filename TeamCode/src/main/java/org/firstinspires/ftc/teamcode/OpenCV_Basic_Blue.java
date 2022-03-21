@@ -17,10 +17,12 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvInternalCamera2;
 
 @Config //Disable if not using FTC Dashboard https://github.com/PinkToTheFuture/OpenCV_FreightFrenzy_2021-2022#opencv_freightfrenzy_2021-2022
-@Autonomous(name="OpenCV_Contour_3954_Test", group="Tutorials")
+@Autonomous(name="OpenCV Basic Blue", group="Tutorials")
 
-public class OpenCV_Contour_3954_Test extends LinearOpMode {
+public class OpenCV_Basic_Blue extends LinearOpMode {
     private OpenCvCamera webcam;
+
+    StandartConfig robot = new StandartConfig();
 
     private static final String VUFORIA_KEY =
             "AYL2JCv/////AAABmZtbvIR1OE4EqwDEQrfdLGEVkaFVdZIeCT0/sj+w0GU45fXBMPeDexxY5oTxkgBTlBnW/L8pr4FRst8Nzvlv8WesJ6LkyXmChZFQTksvvJ75aNUx3+JBzuLL17ROiklPQGJNter6Hn6gOqmtJ45r4E/68D1DLL7dQThGhRVp/ity8XPM1h++Vl444xTo/P7QaXYKcbYqk2GoHDGnA8/uPqUKAhCo7oVAoD/74qRCYrCC6IeupYBF7SAiZ+RMWOH3UbShX14jbN+QNWgUGVm/8G21FYpFtjJbrnXm75SCd/mrhsXIg8DE1SInUR7VpZKQBTqZx5PTXiLP+T+i3+NdSqGdcwXeUKx74ap4eYwiQHSs";
@@ -33,6 +35,8 @@ public class OpenCV_Contour_3954_Test extends LinearOpMode {
     private double CbLowerUpdate = 100;
     private double CrUpperUpdate = 255;
     private double CbUpperUpdate = 255;
+
+    public boolean done = false;
 
     public static double borderLeftX    = 0.0;   //fraction of pixels from the left side of the cam to skip
     public static double borderRightX   = 0.0;   //fraction of pixels from the right of the cam to skip
@@ -53,6 +57,13 @@ public class OpenCV_Contour_3954_Test extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException
     {
+        robot.initAuto(hardwareMap);
+
+        robot.motorBackLeft.setPower(1.);
+        robot.motorBackRight.setPower(1.);
+        robot.motorFrontRight.setPower(1.);
+        robot.motorFrontLeft.setPower(1.);
+
         // OpenCV webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK,cameraMonitorViewId);
@@ -69,7 +80,7 @@ public class OpenCV_Contour_3954_Test extends LinearOpMode {
             @Override
             public void onOpened()
             {
-                webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+                webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
@@ -85,6 +96,8 @@ public class OpenCV_Contour_3954_Test extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         telemetry.update();
         waitForStart();
+
+        robot.start_reset();
 
         while (opModeIsActive())
         {
@@ -143,11 +156,93 @@ public class OpenCV_Contour_3954_Test extends LinearOpMode {
     }
     public void AUTONOMOUS_A(){
         telemetry.addLine("Autonomous A");
+        if (done = false) {
+            robot.motorsSet(1400,-1400,1400,-1400);
+            sleep(1000);
+            done = true;
+            robot.motorsSet(2800, 2800, 2800, 2800);
+            sleep(1500);
+
+            robot.motorsSet(800, -800, 800, -800);
+            sleep(1500);
+
+            robot.motorHand.setPower(0.25);
+            robot.motorHand.setTargetPosition(280*2);
+            sleep(650);
+
+            robot.servoVal.setPower(-0.3);
+            sleep(1500);
+
+            robot.servoVal.setPower(0.);
+
+            robot.motorsSet(-2400, 2400, -2400, 2400);
+            robot.motorHand.setTargetPosition(50*4);
+            sleep(1500);
+
+            robot.motorsSet(7800, 7800, 7800, 7800);
+        }
     }
     public void AUTONOMOUS_B(){
-        telemetry.addLine("Autonomous B");
+        if (done = false) {
+            telemetry.addLine("Autonomous B");
+            done = true;
+            robot.motorsSet(1400,-1400,1400,-1400);
+            sleep(1000);
+
+            robot.motorsSet(2800, 2800, 2800, 2800);
+            sleep(1500);
+
+            robot.motorsSet(800, -800, 800, -800);
+            sleep(1500);
+
+            robot.motorHand.setPower(0.25);
+            robot.motorHand.setTargetPosition(77 * 4);
+            sleep(650);
+
+            robot.servoVal.setPower(-0.3);
+            sleep(1500);
+
+            robot.servoVal.setPower(0.);
+
+            robot.motorsSet(-2400, 2400, -2400, 2400);
+            robot.motorHand.setTargetPosition(77 * 4);
+            sleep(1500);
+
+            robot.motorsSet(7800, 7800, 7800, 7800);
+
+            done = true;
+        }
     }
     public void AUTONOMOUS_C(){
-        telemetry.addLine("Autonomous C");
+        if (done = false) {
+            done = true;
+            telemetry.addLine("Autonomous C");
+
+            robot.motorsSet(1400,-1400,1400,-1400);
+            sleep(1000);
+
+            robot.motorsSet(2800, 2800, 2800, 2800);
+            sleep(1500);
+
+            robot.motorsSet(800, -800, 800, -800);
+            sleep(1500);
+
+            robot.motorHand.setPower(0.25);
+            robot.motorHand.setTargetPosition(35 * 4);
+            sleep(650);
+
+            robot.servoVal.setPower(-0.3);
+            sleep(1500);
+
+            robot.servoVal.setPower(0.);
+
+            robot.motorsSet(-2400, 2400, -2400, 2400);
+            robot.motorHand.setTargetPosition(50 * 4);
+            sleep(1500);
+
+            robot.motorsSet(7800, 7800, 7800, 7800);
+
+            done = true;
+        }
     }
 }
