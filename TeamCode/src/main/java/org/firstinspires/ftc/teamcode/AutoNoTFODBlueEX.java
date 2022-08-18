@@ -38,34 +38,22 @@ public class AutoNoTFODBlueEX extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        robot.motorsSet(2800, 2800, 2800, 2800);
-        sleep(1500);
-
-        robot.motorsSet(800, -800, 800, -800);
-        sleep(1500);
-
-        robot.motorHand.setPower(0.25);
-        robot.motorHand.setTargetPosition(285);
-        sleep(650);
-
-        robot.servoVal.setPower(-0.3);
-        sleep(1500);
-
-        robot.servoVal.setPower(0.);
-
-        robot.motorsSet(-2400, 2400, -2400, 2400);
-        robot.motorHand.setTargetPosition(100);
-        sleep(1500);
-
-        robot.motorsSet(7800, 7800, 7800, 7800);
-        sleep(2000);
-        /*
-        I think we should rewrite this. Robot should return to starting position and after that
-        begin cycling.
-         */
+        int loop = 0;
 
         while (opModeIsActive()) {
             //todo write something here huh
+
+        robot.motorBackLeft.setTargetPosition(500);
+        robot.motorFrontLeft.setTargetPosition(500);
+        robot.motorBackRight.setTargetPosition(-500);
+        robot.motorFrontRight.setTargetPosition(-500);
+        sleep(600);
+        while (loop < 4) {
+            robot.motorFrontRight.setTargetPosition(robot.motorFrontRight.getTargetPosition()*-1);
+            robot.motorFrontLeft.setTargetPosition(robot.motorFrontLeft.getTargetPosition()*-1);
+            robot.motorBackLeft.setTargetPosition(robot.motorBackLeft.getTargetPosition()*-1);
+            robot.motorBackRight.setTargetPosition(robot.motorBackRight.getTargetPosition()*-1);
+        }
             telemetry.addData("runtime", runtime.toString());
         }
 

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import static java.lang.Thread.sleep;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,15 +11,26 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
+@Config
 @TeleOp(name = "Standard Configuration OpMode", group = "Linear Opmode")
 public class TeleOpTC extends OpMode {
+    private static final int CAMERA_WIDTH  = 640; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
+    public static double MULTIPLIER = 1.0;
+    public OpenCvCamera webcam;
+    FtcDashboard dashboard = FtcDashboard.getInstance();
 
     BNO055IMU imu;
     Orientation Angles = new Orientation();
@@ -47,6 +59,31 @@ public class TeleOpTC extends OpMode {
 
     public void start() {
         runtime.reset();
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.SIDEWAYS_LEFT);
+            }
+
+            @Override
+            public void onError(int errorCode)
+            {
+                /*
+                 * This will be called if the camera could not be opened
+                 */
+            }
+        });
+        // Only if you are using ftcdashboard
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+        FtcDashboard.getInstance().startCameraStream(webcam, 30);
+
+        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 //        robot.motorHand.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        robot.motorHand.setPower(-0.3);
 //        try {
@@ -91,6 +128,9 @@ public class TeleOpTC extends OpMode {
             robot.motorHand.setPower(0.15);
         }
         if (gamepad1.y) {
+            if (gamepad1.left_bumper) {
+                robot.motorHand.setTargetPosition(225*4);
+            }
             robot.motorHand.setTargetPosition(158*4); //-15
             robot.motorHand.setPower(0.11);
         }
@@ -150,20 +190,26 @@ public class TeleOpTC extends OpMode {
             leftBackPower /= max;
             rightBackPower /= max;
         }
+        robot.motorFrontLeft.setPower(leftFrontPower*MULTIPLIER);
+        robot.motorFrontRight.setPower(rightFrontPower*MULTIPLIER);
+        robot.motorBackLeft.setPower(leftBackPower*MULTIPLIER);
+        robot.motorBackRight.setPower(rightBackPower*MULTIPLIER);
 
-
-        robot.motorFrontLeft.setPower(leftFrontPower*0.5);
-        robot.motorFrontRight.setPower(rightFrontPower*0.5);
-        robot.motorBackLeft.setPower(leftBackPower*0.5);
-        robot.motorBackRight.setPower(rightBackPower*0.5);
+//        robot.motorFrontLeft.setPower(leftFrontPower*0.5);
+//        robot.motorFrontRight.setPower(rightFrontPower*0.5);
+//        robot.motorBackLeft.setPower(leftBackPower*0.5);
+//        robot.motorBackRight.setPower(rightBackPower*0.5);
 
         // Telemetry of hand DCMotor and runtime.
         telemetry.addData("Status", "Run Time: " + runtime);
         telemetry.addData("TargetPos", robot.motorHand.getTargetPosition());
         telemetry.addData("CurrentPos", robot.motorHand.getCurrentPosition());
+        telemetry.addData("Power (LeftFront)",leftFrontPower);
+        telemetry.addData("Power (LeftBack)",leftBackPower);
+        telemetry.addData("Power (RightBack)",rightBackPower);
+        telemetry.addData("Power (RightFront)",rightFrontPower);
         telemetry.update();
 
-        telemetry.addData("Heading: ", imu.get)
     }
 
     public void stop() {

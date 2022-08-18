@@ -18,6 +18,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 public class OpenCV_Basic_Red extends LinearOpMode {
     private OpenCvCamera webcam;
 
+
     StandartConfig robot = new StandartConfig();
 
     private static final String VUFORIA_KEY =
